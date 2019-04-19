@@ -1,12 +1,4 @@
-package pong;
-
-//(c) A+ Computer Science
-//www.apluscompsci.com
-//Name -
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Canvas;
+import java.awt.*;
 
 public class BlockTestTwo extends Canvas
 {
