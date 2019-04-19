@@ -1,13 +1,10 @@
-package pong;
-
 //(c) A+ Computer Science
 //www.apluscompsci.com
 //Name -
-import java.awt.Color;
-import java.awt.Graphics;
 
-public class Ball extends Block {
+import java.awt.*;
 
+public class Ball extends Block implements Collidable{
     private int xSpeed;
     private int ySpeed;
 
@@ -23,72 +20,73 @@ public class Ball extends Block {
         ySpeed = 1;
     }
 
-    public Ball(int x, int y, int w, int h) {
-        super(x, y, w, h);
-        xSpeed = 3;
-        ySpeed = 1;
+    public Ball(int x, int y, int width, int height) {
+        super(x, y, width, height);
     }
 
-    public Ball(int x, int y, int w, int h, Color c) {
-        super(x, y, w, h, c);
-        xSpeed = 3;
-        ySpeed = 1;
+    public Ball(int x, int y, int width, int height, Color col) {
+        super(x, y, width, height, col);
     }
 
-    public Ball(int x, int y, int w, int h, Color c, int xS, int yS) {
-        super(x, y, w, h, c);
-        xSpeed = xS;
-        ySpeed = yS;
+    public Ball(int x, int y, int width, int height, Color col, int xspd, int yspd) {
+        super(x, y, width, height, col);
+        xSpeed = xspd;
+        ySpeed = yspd;
     }
 
-    //add the other Ball constructors
-    //add the set methods
+
     public void moveAndDraw(Graphics window) {
-        //draw a white ball at old ball location
-        setColor(Color.WHITE);
-        draw(window);
-        setxPos(getxPos() + getxSpeed());
-        setyPos(getyPos() + getySpeed());
-		//setY
+        draw(window, Color.white);
 
-        //draw the ball at its new location
-        draw(window);
-        //setColor(Color.BLUE);
-        //draw(window, getColor());
+        setX(getX() + xSpeed);
+        setY(getY() + ySpeed);
+
+        draw(window, getColor());
+
     }
 
     public boolean equals(Object obj) {
-        Ball test = (Ball) obj;
-        return super.equals(obj) && this.getxSpeed() == test.getxSpeed() && this.getySpeed() == test.getySpeed();
+        Ball tb = (Ball) obj;
+        return super.equals(obj) && (getYSpeed() == tb.getYSpeed() && getXSpeed() == tb.getXSpeed());
     }
 
-    //add a toString() method
-
-    /**
-     * @return the xSpeed
-     */
-    public int getxSpeed() {
-        return xSpeed;
+    public boolean didCollideRight(Object obj) {
+        Paddle rightPaddle = (Paddle) obj;
+        return getX() >= rightPaddle.getX() - rightPaddle.getWidth() - Math.abs(getXSpeed());
     }
 
-    /**
-     * @param xSpeed the xSpeed to set
-     */
-    public void setxSpeed(int xSpeed) {
-        this.xSpeed = xSpeed;
+    public boolean didCollideLeft(Object obj) {
+        Paddle leftPaddle = (Paddle) obj;
+        return getX() <= leftPaddle.getX() + leftPaddle.getWidth() + Math.abs(getXSpeed());
     }
 
-    /**
-     * @return the ySpeed
-     */
-    public int getySpeed() {
+    public boolean didCollideTop(Object obj) {
+        Block b = (Block) obj;
+        return getY() >= b.getY() && getY() <= b.getY() + b.getHeight();
+    }
+
+    public boolean didCollideBottom(Object obj) {
+        Block b = (Block) obj;
+        return getY() + getHeight() >= b.getY() && getY() + getHeight() <= b.getY() + b.getHeight();
+    }
+
+    public int getYSpeed() {
         return ySpeed;
     }
 
-    /**
-     * @param ySpeed the ySpeed to set
-     */
-    public void setySpeed(int ySpeed) {
-        this.ySpeed = ySpeed;
+    public void setYSpeed(int yspd) {
+        ySpeed = yspd;
+    }
+
+    public int getXSpeed() {
+        return xSpeed;
+    }
+
+    public void setXSpeed(int xspd) {
+        xSpeed = xspd;
+    }
+
+    public String toString() {
+        return super.toString() + "\tSpeed: [" + xSpeed + " " + ySpeed + "]";
     }
 }
